@@ -1,5 +1,5 @@
-use axum::{middleware, routing::{get}, Json, Router};
-use serde::{Deserialize};
+use axum::{middleware, routing::get, Json, Router};
+use serde::Deserialize;
 use String;
 use axum::extract::Query;
 use axum::extract::Path;
@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
         .merge(router_hello())
         .merge(web::routes_login::routes())
         .nest("/api", routes_apis)
-        .layer(middleware::map_response(main_reponse_mapper))
+        .layer(middleware::map_response(main_response_mapper))
         .layer(middleware::from_fn_with_state(
             mc.clone(),
             web::mw_auth::mw_ctx_resolver,
@@ -55,7 +55,7 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn main_reponse_mapper(
+async fn main_response_mapper(
     ctx: Option<Ctx>,
     uri: Uri,
     req_method: Method,
